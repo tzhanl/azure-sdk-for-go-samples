@@ -34,6 +34,6 @@ steps:
     go get -u golang.org/x/lint/golint
   workingDirectory: '$(modulePath)'
   displayName: 'Install Dependencies'
-- script: go test ./test/test.sh
+- script: make test ./test/test.sh
   workingDirectory: '$(modulePath)'
   displayName: 'Run Test'
