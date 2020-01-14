@@ -35,6 +35,6 @@ steps:
     go get -u golang.org/x/lint/golint
   workingDirectory: '$(sdkPath)'
   displayName: 'Install Dependencies'
-- script: go build -v .
+- script: make test
   workingDirectory: '$(sdkPath)'
-  displayName: 'Build'
+  displayName: 'Run Test'
