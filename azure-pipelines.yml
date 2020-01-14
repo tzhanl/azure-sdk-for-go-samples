@@ -11,10 +11,9 @@ pool:
 
 variables:
   GOBIN:  '$(GOPATH)/bin' # Go binaries path
-  GOROOT: '/usr/local/go1.13' # Go installation path
+  GOROOT: '/usr/local/go1.11' # Go installation path
   GOPATH: '$(system.defaultWorkingDirectory)/gopath' # Go workspace path
   modulePath: '$(GOPATH)/src/github.com/$(build.repository.name)' # Path to the module's code
-  sdkPath: '$(GOPATH)/src/github.com/$(build.repository.name)'
 
 steps:
 - script: |
@@ -27,9 +26,14 @@ steps:
     echo '##vso[task.prependpath]$(GOBIN)'
     echo '##vso[task.prependpath]$(GOROOT)/bin'
   displayName: 'Set up the Go workspace'
-- script: dep ensure
-  workingDirectory: '$(sdkPath)'
+- script: | 
+    set -e 
+    go version 
+    curl -sSL https://raw.githubusercontent.com/golang/dep/master/install.sh | sh 
+    dep ensure -v 
+    go get -u golang.org/x/lint/golint
+  workingDirectory: '$(modulePath)'
   displayName: 'Install Dependencies'
 - script: make test ./test/test.sh
-  workingDirectory: '$(sdkPath)'
+  workingDirectory: '$(modulePath)'
   displayName: 'Run Test'
