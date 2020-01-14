@@ -27,12 +27,7 @@ steps:
     echo '##vso[task.prependpath]$(GOBIN)'
     echo '##vso[task.prependpath]$(GOROOT)/bin'
   displayName: 'Set up the Go workspace'
-- script: |
-    set -e
-    go version
-    curl -sSL https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
-    dep ensure -v
-    go get -u golang.org/x/lint/golint
+- script: dep ensure
   workingDirectory: '$(sdkPath)'
   displayName: 'Install Dependencies'
 - script: make test ./test/test.sh
